@@ -10,7 +10,7 @@
         </div>
         <div class="menu_left">
           <ul>
-            <li><Icon type="md-create"/> <router-link :to="{path: '/article'}">文章操作</router-link></li>
+            <li><Icon type="md-create"/> <router-link :to="{path: '/'}">文章操作</router-link></li>
             <li><Icon type="md-attach"/><router-link :to="{path: '/label'}">标签操作</router-link></li>
             <li><Icon type="ios-search-outline"/><router-link :to="{path: '/search'}">文章查找</router-link></li>
           </ul>
@@ -61,12 +61,15 @@
     font-size: 13px;
     li{
       padding: 10px 0;
+      a{
+        color: #fff;
+      }
       i{
         margin-right: 10px;
         margin-top: -2px;
       }
       &:hover{
-        background: #fff;
+        background: #57c5f7;
         color: #000;
         -webkit-transition: .3s ease-in-out;
         -moz-transition: .3s ease-in-out;

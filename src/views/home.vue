@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    <Spin fix size='large' v-show="loading">
+        <loading></loading>
+    </Spin>
     <div class="labelTitle">
       文章信息表
     </div>
@@ -31,6 +34,7 @@ export default {
   data(){
     var self = this
     return {
+      loading: false, //加载中
       columns: [{
         type: "selection",
         width: 60,
@@ -39,16 +43,21 @@ export default {
         title: "文章名称",
         width: 200,
         align: "center",
-        key: "name"
+        key: "articleTitle"
       },{
         title: "文章分类",
         width: 200,
         align: "center",
-        key: "label"
+        key: "articleLabel"
       },{
         align: "center",
         title: "文章内容",
-        key: "article"
+        key: "articleInfo"
+      },{
+        align: "center",
+        title: "创建时间",
+        width: 200,
+        key: "subDate"
       },{
         title: "操作",
         align: "center",
@@ -64,49 +73,32 @@ export default {
                 self.goEdit()
               }
             }
-          },"编辑/查看"),h("Button",{
-            props:{
-              type:"warning",
-              size: "small"
-            },
-            style:{
-              marginLeft: "10px",
-              letterSpacing: "2px"
-            },
-            on: {
-              click: ()=>{
-                self.delCon = !self.delCon
-              }
-            }
-          },"删除")])
+          },"编辑/查看")])
         }
       }], //表头
-      tabdata: [{
-        id: 100,
-        name: "html",
-        label: "HTML",
-        article: "html是一门标记语言"
-      },{
-        id: 101,
-        name: "html",
-        label: "HTML",
-        article: "html是一门标记语言"
-      },{
-        id: 102,
-        name: "html",
-        label: "HTML",
-        article: "html是一门标记语言"
-      },{
-        id: 103,
-        name: "html",
-        label: "HTML",
-        article: "html是一门标记语言"
-      }],
+      tabdata: [],
       selectarr: [], //复选框数据
       delCon: false, //删除确认提示
     }
   },
+  created:function(){
+    this.initdata()
+  },
   methods: {
+    //初始化数据
+    initdata(){
+      this.loading = true
+      this.remote({
+        url: "/articleInfo",
+        method: "get"
+      })
+      .then(res=>{
+        this.loading = false;
+        this.tabdata = res.data
+      },err=>{
+        this.loading = false;
+      })
+    },
     //选中事件
     selectRow(selection,row){
       this.selectarr = selection

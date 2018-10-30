@@ -27,16 +27,16 @@
         animation: move 1.4s linear infinite;
     }
     &>div:nth-of-type(4){
-        animation-delay: 1.4s;
+        animation-delay: 0.8s;
     }
     &>div:nth-of-type(3){
-        animation-delay: 1.2s;
+        animation-delay: 0.6s;
     }
     &>div:nth-of-type(2){
-        animation-delay: 1.0s;
+        animation-delay: 0.4s;
     }
     &>div:nth-of-type(1){
-        animation-delay: 0.8s;
+        animation-delay: 0s;
     }
 }
 </style>

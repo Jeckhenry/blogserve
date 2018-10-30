@@ -1,6 +1,9 @@
 <!-- -->
 <template>
     <div class="edit">
+        <Spin fix size='large' v-show="loading">
+            <loading></loading>
+        </Spin>
         <div class="labelTitle">
         文章信息编辑<Button @click="goback" type="success">返回文章页</Button>
         </div>
@@ -10,8 +13,10 @@
         </div>
         <div class="title">
             <label for="">文章分类：</label>
-            <Select v-model="label" style="width:300px;" size="large">
-                <Option value="html">html</Option>
+            <Select :label-in-value="true" v-model="label.id" style="width:300px;" size="large" @on-change="change">
+                <Option :value="item.id" v-for="(item,index) of labelArr" :key="index">
+                    {{item.labelname}}
+                </Option>
             </Select>
         </div>
         <div class="article">
@@ -21,7 +26,7 @@
             </div>
         </div>
         <div class="submit">
-            <Button type="info" style="width:10%;">提交</Button>
+            <Button type="info" style="width:10%;" @click="submit">提交</Button>
         </div>
     </div>
 </template>
@@ -31,13 +36,78 @@
         data(){
             return {
                 title: "",
-                label: "",
-                content:  ""
+                label: {
+                    labelname:"",
+                    id: ""
+                },
+                content:  "",
+                labelArr: [], //存放标签信息
+                loading: false, //loading
             }
         },
+        created: function(){
+            this.loading = true;
+            this.remote({
+                url: "/labelInfo",
+                method: "get"
+            })
+            .then(res=>{
+                this.labelArr = res.data
+                this.loading = false;
+            },err=>{
+                this.loading = false;
+            })
+        },
         methods:{
+            change(params){
+                this.label.labelname = params.label;
+            },
             goback(){
                 this.$router.back(-1)
+            },
+            //提交数据
+            submit(){
+                if(!this.title || !this.label || !this.content){
+                   this.$Message.warning("文章名称，文章分类，文章内容不能为空")
+                   return
+                }
+                this.$Modal.confirm({
+                    render: (h)=>{
+                        return h("div",{
+                            props: {
+                                style: {
+                                    textAlign: "center"
+                                }
+                            }
+                        },"确认新增吗？")
+                    },
+                    onOk: ()=>{
+                        this.loading = true;
+                        this.remote({
+                            url: "/addArticle",
+                            method: "POST",
+                            data: {
+                            articleName: this.title,
+                            articleLabel: this.label.labelname,
+                            articleInfo: this.content,
+                            labelId: this.label.id
+                            }
+                        })
+                        .then(res=>{
+                            this.loading = false;
+                            if(res.code == 200){
+                                this.$Message.success("操作成功")
+                                this.$router.push({path: "/"})
+                            }else{
+                                this.$Message.success("操作失败")
+                            }
+                        },err=>{
+                            this.loading = false;
+                        })
+                    }
+                })
+                
+                
             }
         }
     }

@@ -4,7 +4,6 @@ import Qs from "qs"
 
 let baseUrl = '';
 let headers = {};
-
 const fs  = new Vue()
 const AXIOS = axios.create({
     baseURL: baseUrl,
@@ -13,6 +12,11 @@ const AXIOS = axios.create({
 })
 AXIOS.interceptors.request.use(config=>{
     if(config.data){
+        Object.keys(config.data).forEach((key)=>{
+            if ((typeof config.data[key]) == "object"){
+                config.data[key] = JSON.stringify(config.data[key])
+            }
+        })
         config.data = Qs.stringify(config.data)
     }
     return config;

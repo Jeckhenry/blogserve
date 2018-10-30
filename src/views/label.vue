@@ -39,9 +39,7 @@
 </template>
 
 <script>
-  import loading from "../components/loading.vue"
   export default {
-    components: { loading },
     data(){
       var self = this
       return{
@@ -49,11 +47,13 @@
               {
                   type: 'selection',
                   width: 60,
-                  align: 'center'
+                  align: 'center',
+                  
               },
               {
                   title: '标签类名',
-                  key: 'labelname'
+                  key: 'labelname',
+                  align: "center"
               },
               {
                   title: '操作',
@@ -103,6 +103,11 @@
           method: "GET"
         }).then(res=>{
           this.infodata = res.data;
+          this.infodata.forEach((val,index)=>{
+            if(val.isUse){
+              val._disabled = true
+            }
+          })
           this.loading = false;
         },err=>{
           this.loading = false;
@@ -114,6 +119,7 @@
       },
       //删除事件
       showDel(){
+        this.ids = [];
         if(this.selectArr.length < 1){
           this.$Message.warning("请选中数据")
         }else{
@@ -124,6 +130,15 @@
         this.selectArr.forEach((val,index)=>{
           this.ids.push(val.id)
         })
+        var len = this.ids.length;
+        let ids = ''
+        this.ids.forEach((val,index)=>{
+          if(index < len-1){
+            ids += val + ","
+          }else{
+            ids += val;
+          }
+        })
         this.remote({
           url: "/delLabel",
           method: "POST",
@@ -132,13 +147,23 @@
           }
         })
         .then(res=>{
-          console.log(res)
+          if (res.code == 200) {
+            this.$Message.success("删除成功")
+            this.initdata()
+          }else{
+            this.$Message.success("删除失败")
+            this.initdata()
+          }
         },err=>{
           console.log(err)
         })
       },
       //编辑+新增
       edit(){
+        if (this.labelInfo == ""){
+          this.$Message.warning("标签名称不能为空")
+          return
+        }
         var msg = "";
         if (this.infoId) {
           msg = "修改"

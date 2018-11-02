@@ -27,7 +27,7 @@ AXIOS.interceptors.response.use(response=>{
     if(response.data.code == 200){
         return response.data
     }else{
-        fs.$Message.warning("操作失败")
+        fs.$Message.warning(response.data.message)
     }
 },err=>{
     fs.$Message.warning("服务器错误")

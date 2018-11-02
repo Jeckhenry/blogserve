@@ -14,6 +14,21 @@ Vue.use(iEditor)
 Vue.component('loading',loading)
 Vue.config.productionTip = false
 Vue.prototype.remote = axios
+Vue.prototype.locastorage = function(data){
+  window.localStorage.setItem("userinfo",JSON.stringify(data))
+}
+Vue.prototype.removelocastorage = function(){
+  window.localStorage.removeItem("userinfo")
+}
+router.beforeEach((to, from, next) => {
+  // to and from are both route objects
+  console.log(to.name)
+  if(to.name != "login" && !localStorage.getItem("userinfo")){
+    next("/")
+  }else{
+    next()
+  }
+})
 
 new Vue({
   router,

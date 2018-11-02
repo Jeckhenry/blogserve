@@ -43,9 +43,22 @@
                 content:  "",
                 labelArr: [], //存放标签信息
                 loading: false, //loading
+                article: {}, //存放路由跳转携带的参数
+                articleId: '', //文章id
             }
         },
         created: function(){
+            if(this.$route.params.article){
+                localStorage.setItem("mid_blog_cbim",JSON.stringify(this.$route.params.article))
+                this.article = this.$route.params.article
+            }else{
+                this.article = JSON.parse(localStorage.getItem("mid_blog_cbim"))
+            }
+            this.title = this.article.articleTitle
+            this.label.labelname = this.article.articleLabel
+            this.label.id = this.article.labelId
+            this.content = this.article.articleInfo
+            this.articleId = this.article.articleId
             this.loading = true;
             this.remote({
                 url: "/labelInfo",
@@ -59,6 +72,7 @@
             })
         },
         methods:{
+            //下拉框数据
             change(params){
                 this.label.labelname = params.label;
             },
@@ -67,6 +81,12 @@
             },
             //提交数据
             submit(){
+                var msg = ""
+                if (this.articleId){
+                    msg = "修改"
+                }else{
+                    msg = "新增"
+                }
                 if(!this.title || !this.label || !this.content){
                    this.$Message.warning("文章名称，文章分类，文章内容不能为空")
                    return
@@ -79,7 +99,7 @@
                                     textAlign: "center"
                                 }
                             }
-                        },"确认新增吗？")
+                        },"确认"+msg+"吗？")
                     },
                     onOk: ()=>{
                         this.loading = true;
@@ -90,14 +110,15 @@
                             articleName: this.title,
                             articleLabel: this.label.labelname,
                             articleInfo: this.content,
-                            labelId: this.label.id
+                            labelId: this.label.id,
+                            articleId: this.articleId
                             }
                         })
                         .then(res=>{
                             this.loading = false;
                             if(res.code == 200){
                                 this.$Message.success("操作成功")
-                                this.$router.push({path: "/"})
+                                this.$router.push({path: "/main/home"})
                             }else{
                                 this.$Message.success("操作失败")
                             }

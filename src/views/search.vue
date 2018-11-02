@@ -1,10 +1,13 @@
 <template>
     <div class="search">
+        <Spin fix size='large' v-show="loading">
+            <loading></loading>
+        </Spin>
         <div class="labelTitle">
             文章查找
         </div>
         <div class="delBtn">
-            <Input type="text" style="width:500px;" placeholder="请输入文章名称进行查找" clearable size="large">
+            <Input type="text" v-model="title" :search="true" @on-enter="search" style="width:500px;" placeholder="请输入文章名称进行查找" clearable size="large">
                 <Icon type="ios-search" slot="suffix"/>
             </Input>
         </div>
@@ -37,17 +40,27 @@
                     align: "center",
                 },{
                     title: "文章名称",
-                    width: 350,
+                    width: 200,
                     align: "center",
-                    key: "name"
+                    key: "articleTitle"
                 },{
                     title: "文章分类",
-                    width: 350,
+                    width: 200,
                     align: "center",
-                    key: "label"
+                    key: "articleLabel"
+                },{
+                    title: "文章内容",
+                    align: "center",
+                    key: "articleInfo"
+                },{
+                    title: "创建时间",
+                    width: 200,
+                    align: "center",
+                    key: "subDate"
                 },{
                     title: "操作",
                     align: "center",
+                    width: 200,
                     render(h,params){
                         return h("Button",{
                             props: {
@@ -56,29 +69,36 @@
                             },
                             on: {
                                 click: ()=>{
-                                    self.$router.push({path: "/articleInfo"})
+                                    self.$router.push({name:"edit",params: {article:params.row}})
                                 }
                             }
-                        },"查看")
+                        },"编辑/查看")
                     }
                 }],
-                dataTab: [{
-                    name: "html",
-                    id: 100,
-                    label: "HTML",
-                },{
-                    name: "html",
-                    id: 100,
-                    label: "HTML",
-                },{
-                    name: "html",
-                    id: 100,
-                    label: "HTML",
-                },{
-                    name: "html",
-                    id: 100,
-                    label: "HTML",
-                }]
+                dataTab: [],
+                loading: false, //
+                title: ""
+            }
+        },
+        methods:{
+            //搜索方法
+            search(){
+                this.loading = true
+                this.remote({
+                    url: "/searcharticle",
+                    method: "post",
+                    data: {
+                        title: this.title
+                    }
+                })
+                .then(res=>{
+                    this.loading = false
+                    if (res.code == 200){
+                        this.dataTab = res.data
+                    }
+                },err=>{
+                    this.loading = false
+                })
             }
         }
     }

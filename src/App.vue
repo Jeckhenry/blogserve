@@ -1,25 +1,6 @@
 <template>
   <div id="app">
-    <Layout :style="{minHeight: '100vh'}">
-      <Sider :style="{background: '#32353A'}">
-        <div class="blogTitle">
-          BLOG后管
-        </div>
-        <div class="user">
-          您好！，管理员。 <a href="javascript:void(0)"><Icon type="ios-log-out"/>退出</a>
-        </div>
-        <div class="menu_left">
-          <ul>
-            <li><Icon type="md-create"/> <router-link :to="{path: '/'}">文章操作</router-link></li>
-            <li><Icon type="md-attach"/><router-link :to="{path: '/label'}">标签操作</router-link></li>
-            <li><Icon type="ios-search-outline"/><router-link :to="{path: '/search'}">文章查找</router-link></li>
-          </ul>
-        </div>
-      </Sider>
-      <Layout>
-        <router-view/>
-      </Layout>
-    </Layout>
+    <router-view/>
   </div>
 </template>
 

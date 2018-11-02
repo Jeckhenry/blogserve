@@ -130,15 +130,6 @@
         this.selectArr.forEach((val,index)=>{
           this.ids.push(val.id)
         })
-        var len = this.ids.length;
-        let ids = ''
-        this.ids.forEach((val,index)=>{
-          if(index < len-1){
-            ids += val + ","
-          }else{
-            ids += val;
-          }
-        })
         this.remote({
           url: "/delLabel",
           method: "POST",
@@ -205,7 +196,6 @@
 <style scoped lang="scss">
 .label{
   padding: 50px;
-  position: relative;
   .labelTitle{
     padding: 10px 0;
     font-size: 18px;

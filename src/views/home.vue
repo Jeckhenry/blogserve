@@ -70,7 +70,7 @@ export default {
             },
             on: {
               click: ()=>{
-                self.goEdit()
+                self.goEdit(params.row)
               }
             }
           },"编辑/查看")])
@@ -79,6 +79,7 @@ export default {
       tabdata: [],
       selectarr: [], //复选框数据
       delCon: false, //删除确认提示
+      ids: [], //存放数据id
     }
   },
   created:function(){
@@ -104,12 +105,44 @@ export default {
       this.selectarr = selection
     },
     //跳往新增页面
-    goEdit(){
-      this.$router.push({path: "/edit"})
+    goEdit(params){
+      if(params){
+        this.$router.push({name: "edit",params:{article:params}});
+        return;
+      }
+      this.$router.push({path: "/main/edit"})
     },
     //删除
     delInfo(){
-
+      this.loading = true
+      var single = {
+        articleId: "",
+        labelId: ""
+      }
+      this.ids = [];
+      this.selectarr.forEach((val,index)=>{
+        single = {
+          articleId: val.articleId,
+          labelId: val.labelId
+        }
+        this.ids.push(single)
+      })
+      this.remote({
+        url: "/delArticle",
+        method: "post",
+        data: {
+          ids: this.ids
+        }
+      })
+      .then(res=>{
+        this.loading = false;
+        if(res.code == 200) {
+          this.$Message.success("删除成功")
+          this.initdata()
+        }
+      },err=>{
+        this.loading = false;
+      })
     }
   }
 }

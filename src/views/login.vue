@@ -45,7 +45,7 @@
             handleSubmit(){
                 this.loading = true;
                 this.remote({
-                    url: "/login",
+                    url: "/cookie",
                     method:"post",
                     data: {
                         username: this.formVal.username,
@@ -57,7 +57,7 @@
                     if (res){
                         this.locastorage(res.data)
                         this.$Message.success("登陆成功")
-                        // this.$router.push({path: "/main"})
+                        this.$router.push({path: "/main"})
                     }
                 },err=>{
                     this.loading = false;

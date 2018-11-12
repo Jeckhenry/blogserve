@@ -1,6 +1,7 @@
 import Vue from "vue"
 import axios from "axios"
 import Qs from "qs"
+import router from "./router"
 
 let baseUrl = '';
 let headers = {};
@@ -28,6 +29,10 @@ AXIOS.interceptors.response.use(response=>{
         return response.data
     }else{
         fs.$Message.warning(response.data.message)
+        if (response.data.code == 401){
+            router.push({name: "login"})
+        }
+        return response.data;
     }
 },err=>{
     fs.$Message.warning("服务器错误")

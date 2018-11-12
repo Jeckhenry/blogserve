@@ -112,6 +112,9 @@
         },err=>{
           this.loading = false;
         })
+        .catch(err=>{
+          this.loading = false;
+        })
       },
       selectRow(selection,row){
         //复选框事件

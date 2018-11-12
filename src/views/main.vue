@@ -27,6 +27,15 @@
 export default {
     methods: {
         logout(){
+            this.remote({
+                url: "/logout",
+                method: "get"
+            })
+            .then(res=>{
+
+            },err=>{
+                
+            })
             this.removelocastorage()
             this.$router.push({path: "/"})
         }

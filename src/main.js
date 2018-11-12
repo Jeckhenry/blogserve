@@ -23,11 +23,11 @@ Vue.prototype.removelocastorage = function(){
 router.beforeEach((to, from, next) => {
   // to and from are both route objects
   console.log(to.name)
-  if(to.name != "login" && !localStorage.getItem("userinfo")){
-    next("/")
-  }else{
+  // if(to.name != "login" && !localStorage.getItem("userinfo")){
+  //   next("/")
+  // }else{
     next()
-  }
+  // }
 })
 
 new Vue({

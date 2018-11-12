@@ -45,7 +45,7 @@
             handleSubmit(){
                 this.loading = true;
                 this.remote({
-                    url: "/login",
+                    url: "/cookie",
                     method:"post",
                     data: {
                         username: this.formVal.username,

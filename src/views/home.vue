@@ -51,6 +51,10 @@ export default {
         key: "articleLabel"
       },{
         align: "center",
+        title: "文章简介",
+        key: "articleReview"
+      },{
+        align: "center",
         title: "文章内容",
         key: "articleInfo"
       },{
@@ -91,7 +95,7 @@ export default {
       this.loading = true
       this.remote({
         url: "/articleInfo",
-        method: "get"
+        method: "post"
       })
       .then(res=>{
         this.loading = false;
@@ -148,6 +152,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.tab /deep/.ivu-table-cell{
+    padding: 20px !important;
+    line-height: 20px;
+}
 .home{
   padding: 50px;
   .labelTitle{

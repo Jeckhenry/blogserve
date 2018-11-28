@@ -32,7 +32,6 @@ AXIOS.interceptors.response.use(response=>{
         if (response.data.code == 401){
             router.push({name: "login"})
         }
-        return response.data;
     }
 },err=>{
     fs.$Message.warning("服务器错误")

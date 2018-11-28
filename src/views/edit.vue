@@ -20,6 +20,12 @@
             </Select>
         </div>
         <div class="article">
+            <label for="">文章简洁：</label>
+            <div class="wangedit">
+                <i-editor v-model="contentreview" :autosize="{minRows:10}"></i-editor>
+            </div>
+        </div>
+        <div class="article">
             <label for="">文章内容：</label>
             <div class="wangedit">
                 <i-editor v-model="content" :autosize="{minRows:20}"></i-editor>
@@ -45,6 +51,7 @@
                 loading: false, //loading
                 article: {}, //存放路由跳转携带的参数
                 articleId: '', //文章id
+                contentreview: ""
             }
         },
         created: function(){
@@ -59,6 +66,7 @@
             this.label.id = this.article.labelId
             this.content = this.article.articleInfo
             this.articleId = this.article.articleId
+            this.contentreview = this.article.articleReview
             this.loading = true;
             this.remote({
                 url: "/labelInfo",
@@ -111,7 +119,8 @@
                             articleLabel: this.label.labelname,
                             articleInfo: this.content,
                             labelId: this.label.id,
-                            articleId: this.articleId
+                            articleId: this.articleId,
+                            articleReview: ""
                             }
                         })
                         .then(res=>{

@@ -45,7 +45,7 @@
             handleSubmit(){
                 this.loading = true;
                 this.remote({
-                    url: "/cookie",
+                    url: "/login",
                     method:"post",
                     data: {
                         username: this.formVal.username,
@@ -64,15 +64,8 @@
                 })
             },
             handleReset(){
-                this.remote({
-                    url: "/cookie",
-                    method: "get"
-                })
-                .then(res=>{
-                    console.log(res)
-                },err=>{
-                    console.log(err)
-                })
+                this.formVal.username = "";
+                this.formVal.passwd = "";
             }
         }
     }

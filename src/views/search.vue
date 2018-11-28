@@ -105,6 +105,10 @@
 </script>
 
 <style scoped lang="scss">
+.results /deep/.ivu-table-cell{
+    padding: 20px !important;
+    line-height: 20px;
+}
 .search{
   padding: 50px;
   .labelTitle{
